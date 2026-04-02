@@ -5,7 +5,7 @@ import org.example.database.Quote;
 
 public class HtmlTemplate {
 
-    public static String getHtml() {
+    public static String getHtml(String author, String q) {
 
         String quotes = "";
 
@@ -124,9 +124,7 @@ public class HtmlTemplate {
                 <div class="quote-of-day mt">
                     <h2>Citat dana:</h2>
                     <br>
-                    <p>Steve Jobs:
-                        <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur ipsam nisi eum fugiat sapiente asperiores! Nobis corrupti consequatur beatae delectus."</i>
-                    </p>
+                    <p>""" + author + ": <i>" + q + "</i></p>" + """
                 </div>
         
                 <div class="quotes mt">

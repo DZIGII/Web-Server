@@ -10,7 +10,7 @@ public class Server {
 
     public static final int PORT = 8080;
 
-    static void main() throws IOException {
+    public static void main() throws IOException {
         DataBase.loadQuotes();
         ServerSocket ss = null;
         try {

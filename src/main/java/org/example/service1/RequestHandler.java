@@ -13,38 +13,34 @@ public class RequestHandler {
 
     public Response handleRequest(Request request) {
 
-        Response response = null;
+        if (request.getHttpMethod().equals(HttpMethod.GET) && request.getPath().equals("/quotes")) {
 
-        if (request.getHttpMethod().equals(HttpMethod.GET)) {
+            String responseService2 = QuoteOfTheDay.getQuoteJson();
+            String[] parsed = QuoteOfTheDay.parse(responseService2);
 
-            response = new HtmlResponse(HtmlTemplate.getHtml());
+            String author = parsed[0];
+            String quote = parsed[1];
 
+            return new HtmlResponse(HtmlTemplate.getHtml(author, quote));
         }
-        else if (request.getHttpMethod().equals(HttpMethod.POST)) {
-            if (request.getPath().equals("/save-quote")) {
+        else if (request.getHttpMethod().equals(HttpMethod.GET) && request.getPath().equals("/")) {
+            return new RedirectResponse("/quotes");
+        }
+        else if (request.getHttpMethod().equals(HttpMethod.POST) && request.getPath().equals("/save-quote")) {
 
-                ArrayList<String> quote = new ArrayList<>();
+            ArrayList<String> quote = new ArrayList<>();
 
-                for (String str : request.getBody().split("&")) {
-                    String content = str.split("=")[1].replace("+", " ");
-                    quote.add(content);
-                }
-
-                DataBase.addQuote(new Quote(quote.get(0), quote.get(1)));
-
+            for (String str : request.getBody().split("&")) {
+                String content = str.split("=", 2)[1].replace("+", " ");
+                quote.add(content);
             }
-            else {
 
-            }
-        }
-        else if (request.getHttpMethod().equals(HttpMethod.PUT)) {
+            DataBase.addQuote(new Quote(quote.get(0), quote.get(1)));
 
-        }
-        else {
-
+            return new RedirectResponse("/quotes");
         }
 
-        return response;
+        return new HtmlResponse("<h1>404 Not Found</h1>");
     }
 
 }
